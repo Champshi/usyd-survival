@@ -1,0 +1,290 @@
+[
+  {
+    "id": "found_cash",
+    "type": "good",
+    "name": "Found cash",
+    "description": "You found a $20 note on Eastern Avenue. Lucky day!",
+    "effects": {"money": 20},
+    "weight": 3
+  },
+  {
+    "id": "cafe_tip",
+    "type": "good",
+    "name": "Generous tip",
+    "description": "A regular at the cafe slipped you a $15 tip.",
+    "effects": {"money": 15, "skill:service": 1},
+    "weight": 3
+  },
+  {
+    "id": "free_pizza",
+    "type": "good",
+    "name": "Free Manning Bar pizza",
+    "description": "USU event with free food — you ate well today.",
+    "effects": {"energy": 10, "health": 5, "money": 0},
+    "weight": 3
+  },
+  {
+    "id": "tutor_extension",
+    "type": "good",
+    "name": "Assignment extension",
+    "description": "Your tutor pushed the deadline back a week. Breathing room!",
+    "effects": {"energy": 8, "health": 3},
+    "weight": 2,
+    "max_week": 12
+  },
+  {
+    "id": "team_carry",
+    "type": "good",
+    "name": "Team carried you",
+    "description": "Your INFO6007 group did most of the work this week. Sus, but nice.",
+    "effects": {"course:INFO6007": 8, "energy": 3},
+    "weight": 2
+  },
+  {
+    "id": "merch_giveaway",
+    "type": "good",
+    "name": "USYD merch giveaway",
+    "description": "You scored a free hoodie. Great for winter all-nighters.",
+    "effects": {"health": 4, "energy": 4},
+    "weight": 1
+  },
+  {
+    "id": "prof_praise",
+    "type": "good",
+    "name": "Professor noticed you",
+    "description": "Your COMP9001 lecturer praised your forum post in front of the class.",
+    "effects": {"course:COMP9001": 5, "prof_favor": 5, "energy": 5},
+    "weight": 2
+  },
+  {
+    "id": "sunny_quad",
+    "type": "good",
+    "name": "Sunny day at the Quad",
+    "description": "You took a break in the Quadrangle. Felt human again.",
+    "effects": {"energy": 8, "health": 3},
+    "weight": 3
+  },
+  {
+    "id": "study_breakthrough",
+    "type": "good",
+    "name": "Eureka moment",
+    "description": "A confusing COMP9601 concept finally clicked at 2am.",
+    "effects": {"course:COMP9601": 10, "energy": -5},
+    "weight": 2
+  },
+  {
+    "id": "library_friend",
+    "type": "good",
+    "name": "Library buddy",
+    "description": "You befriended a study partner at Fisher Library.",
+    "effects": {"energy": 5, "health": 3, "academic_avg": 2},
+    "weight": 2
+  },
+  {
+    "id": "train_delay",
+    "type": "bad",
+    "name": "T1 train delay",
+    "description": "Sydney Trains failed you again. You missed your morning lecture.",
+    "effects": {"energy": -5, "academic_avg": -2},
+    "weight": 4,
+    "weekday_only": true
+  },
+  {
+    "id": "team_ghost",
+    "type": "bad",
+    "name": "Group project ghost",
+    "description": "A teammate vanished — you're carrying the team now.",
+    "effects": {"course:INFO6007": -5, "energy": -10, "health": -3},
+    "weight": 3
+  },
+  {
+    "id": "iga_price",
+    "type": "bad",
+    "name": "IGA price hike",
+    "description": "Groceries cost an arm and a leg this week.",
+    "effects": {"money": -40},
+    "weight": 3
+  },
+  {
+    "id": "lost_wallet",
+    "type": "bad",
+    "name": "Lost wallet",
+    "description": "You dropped your wallet somewhere in Newtown. Gone.",
+    "effects": {"money": -80, "health": -5},
+    "weight": 1
+  },
+  {
+    "id": "library_cold",
+    "type": "bad",
+    "name": "Library aircon cold",
+    "description": "Fisher's aircon got you. You're sniffling all day.",
+    "effects": {"health": -10, "energy": -8},
+    "weight": 3
+  },
+  {
+    "id": "phone_died",
+    "type": "bad",
+    "name": "Phone died mid-revision",
+    "description": "Your phone died with all your study notes on it.",
+    "effects": {"academic_avg": -3, "energy": -5},
+    "weight": 2
+  },
+  {
+    "id": "submission_outage",
+    "type": "bad",
+    "name": "Internet outage at submission",
+    "description": "Your wifi died at 11:50pm. You had to dash to the library.",
+    "effects": {"energy": -15, "health": -5},
+    "weight": 2
+  },
+  {
+    "id": "noisy_flatmate",
+    "type": "bad",
+    "name": "Noisy flatmate",
+    "description": "Your flatmate had a party. Sleep was not a priority for them.",
+    "effects": {"energy": -12, "health": -3},
+    "weight": 3
+  },
+  {
+    "id": "harsh_feedback",
+    "type": "bad",
+    "name": "Harsh feedback",
+    "description": "Your tutor's comments stung. Your COMP9120 mark fell short.",
+    "effects": {"course:COMP9120": -6, "energy": -5},
+    "weight": 2
+  },
+  {
+    "id": "food_poisoning",
+    "type": "bad",
+    "name": "Food poisoning",
+    "description": "The Wentworth food court got you. You'll be in bed today.",
+    "effects": {"health": -15, "energy": -15},
+    "weight": 1
+  },
+  {
+    "id": "bills_due",
+    "type": "bad",
+    "name": "Bills due",
+    "description": "Phone + transport top-up + electricity all hit at once.",
+    "effects": {"money": -60},
+    "weight": 3
+  },
+  {
+    "id": "rent_hike",
+    "type": "bad",
+    "name": "Rent increase notice",
+    "description": "Your landlord raised the weekly rent. Sydney living, baby.",
+    "effects": {"money": -100, "health": -5},
+    "weight": 1,
+    "min_week": 5
+  },
+  {
+    "id": "stim_offer",
+    "type": "neutral",
+    "name": "Brain booster pills?",
+    "description": "Someone in the postgrad lounge offers a 'study aid'. It's not legal.",
+    "weight": 1,
+    "min_week": 4,
+    "choices": [
+      {
+        "label": "Refuse politely",
+        "effects": {"health": 2}
+      },
+      {
+        "label": "Just one — I'm exhausted",
+        "effects": {"energy": 30, "addiction": 1, "health": -8}
+      }
+    ]
+  },
+  {
+    "id": "lottery_offer",
+    "type": "hidden",
+    "name": "Lotto stand outside the station",
+    "description": "A lotto stand on King St catches your eye. You feel lucky.",
+    "weight": 1,
+    "min_week": 3,
+    "choices": [
+      {
+        "label": "Walk past",
+        "effects": {}
+      },
+      {
+        "label": "Buy a ticket ($10)",
+        "effects": {"money": -10, "_roll_lottery": 1}
+      }
+    ]
+  },
+  {
+    "id": "ra_invite",
+    "type": "hidden",
+    "name": "RA invitation",
+    "description": "A professor noticed your work and invites you to her research lab.",
+    "weight": 1,
+    "min_week": 4,
+    "max_week": 10,
+    "choices": [
+      {
+        "label": "Decline (focus on coursework)",
+        "effects": {"prof_favor": -2}
+      },
+      {
+        "label": "Accept the RA position",
+        "effects": {"prof_favor": 10, "skill:research": 5}
+      }
+    ]
+  },
+  {
+    "id": "scholarship_news",
+    "type": "good",
+    "name": "Scholarship application open",
+    "description": "Faculty announces a scholarship — your average looks competitive.",
+    "effects": {"energy": 5, "prof_favor": 2},
+    "weight": 1,
+    "min_week": 6
+  },
+  {
+    "id": "bus_delay",
+    "type": "bad",
+    "name": "Bus replacement service",
+    "description": "Trackwork. The bus replacement service tested your soul.",
+    "effects": {"energy": -8},
+    "weight": 3,
+    "weekday_only": true
+  },
+  {
+    "id": "extra_shift",
+    "type": "good",
+    "name": "Extra shift offered",
+    "description": "Your manager offered a weekend shift. Easy money.",
+    "effects": {"money": 80, "energy": -10, "skill:service": 2},
+    "weight": 2,
+    "weekend_only": true
+  },
+  {
+    "id": "newtown_night",
+    "type": "neutral",
+    "name": "Newtown night out",
+    "description": "Friends drag you to King St for dinner.",
+    "weight": 2,
+    "weekend_only": true,
+    "choices": [
+      {
+        "label": "Go and enjoy ($35)",
+        "effects": {"money": -35, "energy": 10, "health": 5}
+      },
+      {
+        "label": "Stay in and study",
+        "effects": {"academic_avg": 3, "energy": -5, "health": -2}
+      }
+    ]
+  },
+  {
+    "id": "gym_session",
+    "type": "good",
+    "name": "USYD Sport gym",
+    "description": "You hit the campus gym. Felt great.",
+    "effects": {"health": 12, "energy": -5},
+    "weight": 2,
+    "weekend_only": true
+  }
+]

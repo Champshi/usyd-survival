@@ -1,0 +1,22 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+.pytest_cache/
+
+# Virtual environments
+venv/
+env/
+.venv/
+
+# Save files (player-specific, shouldn't be in repo)
+saves/
+
+# Editor / OS
+.DS_Store
+.idea/
+.vscode/
+*.swp

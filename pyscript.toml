@@ -1,0 +1,15 @@
+# PyScript configuration — files & packages bundled into the browser runtime.
+# Each entry maps a URL (relative to index.html) to a path inside the
+# in-browser virtual filesystem.
+
+[files]
+"./game/__init__.py" = "./game/__init__.py"
+"./game/player.py" = "./game/player.py"
+"./game/event.py" = "./game/event.py"
+"./game/action.py" = "./game/action.py"
+"./game/job.py" = "./game/job.py"
+"./game/weekend.py" = "./game/weekend.py"
+"./game/exam.py" = "./game/exam.py"
+"./game/ending.py" = "./game/ending.py"
+"./game/web_engine.py" = "./game/web_engine.py"
+"./data/events.json" = "./data/events.json"

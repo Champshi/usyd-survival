@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>USYD Survival Simulator</title>
+
+  <!-- PyScript 2024.x -->
+  <link rel="stylesheet" href="https://pyscript.net/releases/2024.10.2/core.css">
+  <script type="module" src="https://pyscript.net/releases/2024.10.2/core.js"></script>
+
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <!-- Loading overlay shown until PyScript finishes booting -->
+  <div id="boot-screen">
+    <div class="boot-card">
+      <div class="boot-title">USYD SURVIVAL SIMULATOR</div>
+      <div class="boot-sub">Booting Python in your browser…</div>
+      <div class="boot-progress">
+        <div class="boot-bar"></div>
+      </div>
+      <div class="boot-hint">First load takes ~10 seconds (Pyodide + game files). After that it's instant.</div>
+    </div>
+  </div>
+
+  <!-- Main game container — hidden until ready -->
+  <div id="app" class="hidden">
+    <header class="header-panel">
+      <div class="header-title">:: USYD Survival Sim ::</div>
+      <div class="header-meta">
+        <span id="hdr-week">Week ?</span>
+        <span id="hdr-day">?</span>
+        <span id="hdr-phase" class="phase-tag">Study Week</span>
+        <span id="hdr-counter" class="day-counter">Day 0 / 105</span>
+      </div>
+      <div class="progress-track">
+        <div class="progress-bar" id="hdr-progress"></div>
+      </div>
+    </header>
+
+    <main class="dashboard">
+      <!-- Top-left: core stats -->
+      <section class="panel" id="stats-panel">
+        <h2>Core Stats</h2>
+        <div class="stat-row">
+          <span class="stat-label">Energy</span>
+          <span class="stat-bar" data-stat="energy"></span>
+          <span class="stat-value" data-stat-value="energy">--</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-label">Health</span>
+          <span class="stat-bar" data-stat="health"></span>
+          <span class="stat-value" data-stat-value="health">--</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-label">Money</span>
+          <span class="stat-bar" data-stat="money"></span>
+          <span class="stat-value" data-stat-value="money">--</span>
+        </div>
+      </section>
+
+      <!-- Top-right: courses -->
+      <section class="panel courses-panel" id="courses-panel">
+        <h2>Courses</h2>
+        <div id="courses-list"></div>
+      </section>
+
+      <!-- Bottom-left: skills + flags -->
+      <section class="panel skills-panel" id="skills-panel">
+        <h2>Skills &amp; Flags</h2>
+        <div id="skills-list"></div>
+        <div class="flags-row" id="flags-row"></div>
+      </section>
+
+      <!-- Bottom-right: event log -->
+      <section class="panel log-panel" id="log-panel">
+        <h2>Event Log</h2>
+        <div id="event-log" class="event-log"></div>
+      </section>
+    </main>
+
+    <!-- Action area: changes based on game state -->
+    <section class="action-panel" id="action-panel">
+      <div id="action-content"></div>
+    </section>
+  </div>
+
+  <!-- Title screen overlay -->
+  <div id="title-screen" class="overlay hidden">
+    <div class="title-card">
+      <h1 class="title-main">USYD<br>SURVIVAL<br>SIMULATOR</h1>
+      <p class="title-sub">A semester of pain, ramen, and academic glory.</p>
+      <div class="title-buttons">
+        <button class="btn btn-primary" id="btn-new-game">New Game</button>
+        <button class="btn" id="btn-continue">Continue</button>
+        <button class="btn" id="btn-help">How to Play</button>
+      </div>
+      <div class="title-credit">COMP9001 Final Project · Built with Python &amp; PyScript</div>
+    </div>
+  </div>
+
+  <!-- Help modal -->
+  <div id="help-modal" class="overlay hidden">
+    <div class="modal-card">
+      <h2>How to Play</h2>
+      <p>You're a USYD postgrad CS student. You have <b>13 study weeks + 2 exam weeks</b>.
+      Each weekday morning you allocate <b>8 hours</b> across studying (per course),
+      part-time work (per job), rest, and food. Random events fire daily.</p>
+
+      <h3 class="warn">4 ways to die instantly:</h3>
+      <ul>
+        <li>Health drops to 0</li>
+        <li>Money goes below -$1000</li>
+        <li>20+ uses of stimulants (addiction)</li>
+        <li>Win the lottery (special hidden ending)</li>
+      </ul>
+
+      <h3 class="good">5 ways to graduate:</h3>
+      <ul>
+        <li>Honours — average exam ≥ 85, healthy</li>
+        <li>Work King — max skill ≥ 90, all exams pass</li>
+        <li>PhD scholarship — 30+ days as RA, average ≥ 80, professor's favour</li>
+        <li>Plain pass — all 4 exams ≥ 50</li>
+      </ul>
+
+      <h3 class="bad">1 way to fail:</h3>
+      <ul><li>Any exam &lt; 50 → withdrawn</li></ul>
+
+      <button class="btn btn-primary" id="btn-help-close">Got it</button>
+    </div>
+  </div>
+
+  <!-- Event-choice modal -->
+  <div id="event-modal" class="overlay hidden">
+    <div class="modal-card event-card">
+      <div class="event-icon" id="event-icon">[?]</div>
+      <h2 id="event-name">Event</h2>
+      <p id="event-description">…</p>
+      <div id="event-choices" class="event-choices"></div>
+    </div>
+  </div>
+
+  <!-- Ending modal -->
+  <div id="ending-modal" class="overlay hidden">
+    <div class="modal-card ending-card">
+      <h2 id="ending-title">Ending</h2>
+      <p id="ending-text">…</p>
+      <div class="ending-stats" id="ending-stats"></div>
+      <button class="btn btn-primary" id="btn-restart">Play Again</button>
+    </div>
+  </div>
+
+  <!-- Toast for inline notifications -->
+  <div id="toast" class="toast hidden"></div>
+
+  <!-- PyScript: load the game logic -->
+  <script type="py" config="./pyscript.toml">
+import sys
+sys.path.insert(0, "./")
+from game.web_engine import WebGameDriver
+
+driver = WebGameDriver()
+
+# Expose driver to JavaScript via the PyScript window object
+from pyscript import window
+window.gameDriver = driver
+
+# Tell JS that Python is ready
+window.dispatchEvent(window.CustomEvent.new("py-ready"))
+  </script>
+
+  <!-- Main JS controller -->
+  <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,588 @@
+/* =================================================================
+   USYD Survival Simulator — pixel-style CSS
+   Dark navy base, neon accents, monospace font, sharp panel borders.
+   ================================================================= */
+
+:root {
+  --bg: #0a0e27;
+  --bg-panel: #131a3a;
+  --bg-panel-2: #1a234e;
+  --border: #2c3e7a;
+  --border-bright: #4d6cd8;
+
+  --text: #e2e8f5;
+  --text-dim: #8090b3;
+  --text-muted: #5b6a96;
+
+  --green: #56ff8c;
+  --green-dim: #2a6e3f;
+  --yellow: #ffe066;
+  --yellow-dim: #806e2c;
+  --red: #ff5560;
+  --red-dim: #802830;
+  --cyan: #6ff0ff;
+  --magenta: #f06bff;
+  --blue: #6f8fff;
+
+  --font-mono: 'JetBrains Mono', 'Fira Code', 'Menlo', 'Consolas',
+               'Courier New', monospace;
+  --pixel-shadow: 0 0 0 1px var(--border-bright),
+                  0 0 16px rgba(77, 108, 216, 0.18);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-mono);
+  font-size: 13px;
+  line-height: 1.45;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* Subtle scanlines / CRT vibe */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent 0,
+    transparent 2px,
+    rgba(0, 0, 0, 0.04) 2px,
+    rgba(0, 0, 0, 0.04) 3px
+  );
+  z-index: 100;
+}
+
+.hidden { display: none !important; }
+
+/* =================================================================
+   Boot screen
+   ================================================================= */
+#boot-screen {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: var(--bg);
+  z-index: 200;
+}
+.boot-card {
+  text-align: center;
+  padding: 40px 60px;
+  border: 2px solid var(--border-bright);
+  box-shadow: var(--pixel-shadow);
+  background: var(--bg-panel);
+  max-width: 460px;
+}
+.boot-title {
+  font-size: 16px;
+  font-weight: bold;
+  color: var(--magenta);
+  letter-spacing: 4px;
+  margin-bottom: 12px;
+}
+.boot-sub {
+  color: var(--cyan);
+  margin-bottom: 18px;
+}
+.boot-progress {
+  width: 100%;
+  height: 8px;
+  background: #0a1234;
+  border: 1px solid var(--border);
+  overflow: hidden;
+  margin-bottom: 14px;
+}
+.boot-bar {
+  height: 100%;
+  width: 25%;
+  background: linear-gradient(90deg, var(--green), var(--cyan));
+  animation: boot-march 1.4s linear infinite;
+}
+@keyframes boot-march {
+  0%   { transform: translateX(-100%); width: 25%; }
+  50%  { width: 60%; }
+  100% { transform: translateX(400%); width: 25%; }
+}
+.boot-hint {
+  color: var(--text-dim);
+  font-size: 11px;
+}
+
+/* =================================================================
+   App layout
+   ================================================================= */
+#app {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.header-panel {
+  border: 2px solid var(--magenta);
+  background: var(--bg-panel);
+  padding: 10px 16px;
+  margin-bottom: 14px;
+  box-shadow: 0 0 18px rgba(240, 107, 255, 0.15);
+}
+.header-title {
+  color: var(--magenta);
+  font-weight: bold;
+  margin-bottom: 4px;
+  letter-spacing: 1px;
+}
+.header-meta {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  margin-bottom: 8px;
+  color: var(--text);
+}
+.header-meta #hdr-week { color: var(--yellow); font-weight: bold; }
+.phase-tag {
+  padding: 2px 8px;
+  background: rgba(110, 143, 255, 0.15);
+  border: 1px solid var(--blue);
+  color: var(--cyan);
+  font-size: 11px;
+}
+.phase-tag.exam {
+  border-color: var(--red);
+  color: var(--red);
+  background: rgba(255, 85, 96, 0.15);
+}
+.day-counter {
+  margin-left: auto;
+  color: var(--text-dim);
+  font-size: 11px;
+}
+.progress-track {
+  height: 6px;
+  background: #0a1234;
+  border: 1px solid var(--border);
+}
+.progress-bar {
+  height: 100%;
+  width: 0;
+  background: linear-gradient(90deg, var(--blue), var(--cyan));
+  transition: width 0.3s ease;
+}
+
+/* =================================================================
+   Dashboard 4-quadrant grid
+   ================================================================= */
+.dashboard {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+.panel {
+  border: 2px solid var(--border-bright);
+  background: var(--bg-panel);
+  padding: 12px 14px;
+  min-height: 180px;
+  box-shadow: var(--pixel-shadow);
+}
+.panel h2 {
+  font-size: 12px;
+  font-weight: bold;
+  color: var(--cyan);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 10px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--border);
+}
+#stats-panel h2     { color: var(--cyan); }
+#courses-panel h2   { color: var(--yellow); }
+#skills-panel h2    { color: var(--magenta); }
+#log-panel h2       { color: var(--green); }
+
+#stats-panel    { border-color: var(--cyan); }
+#courses-panel  { border-color: var(--yellow); }
+#skills-panel   { border-color: var(--magenta); }
+#log-panel      { border-color: var(--green); }
+
+/* =================================================================
+   Stat rows (energy / health / money / courses / skills)
+   ================================================================= */
+.stat-row {
+  display: grid;
+  grid-template-columns: 80px 1fr 80px;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 0;
+}
+.stat-label {
+  font-weight: bold;
+  color: var(--text);
+}
+.stat-value {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  color: var(--text);
+}
+.stat-bar {
+  display: block;
+  height: 14px;
+  background: #0a1234;
+  border: 1px solid var(--border);
+  position: relative;
+  overflow: hidden;
+  font-family: var(--font-mono);
+  letter-spacing: -1px;
+  white-space: nowrap;
+  color: var(--green);
+  line-height: 14px;
+  font-size: 10px;
+}
+.stat-bar::before { content: ""; }
+
+/* Color modifiers — applied via JS data-* attributes */
+.stat-bar.good  { color: var(--green); }
+.stat-bar.warn  { color: var(--yellow); }
+.stat-bar.bad   { color: var(--red); }
+
+.stat-value.good  { color: var(--green); }
+.stat-value.warn  { color: var(--yellow); }
+.stat-value.bad   { color: var(--red); }
+
+.flags-row {
+  margin-top: 10px;
+  padding-top: 8px;
+  border-top: 1px dashed var(--border);
+  font-size: 11px;
+  color: var(--text-dim);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 10px;
+}
+.flag-pill {
+  padding: 2px 6px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid var(--border);
+}
+.flag-pill.warn { color: var(--yellow); border-color: var(--yellow-dim); }
+.flag-pill.bad  { color: var(--red); border-color: var(--red-dim); }
+.flag-pill.good { color: var(--green); border-color: var(--green-dim); }
+
+/* =================================================================
+   Event log
+   ================================================================= */
+.event-log {
+  font-size: 11px;
+  color: var(--text-dim);
+  max-height: 180px;
+  overflow-y: auto;
+}
+.event-log p {
+  margin: 3px 0;
+  padding-left: 8px;
+  border-left: 2px solid transparent;
+}
+.event-log p.good { color: var(--green); border-color: var(--green-dim); }
+.event-log p.bad  { color: var(--red); border-color: var(--red-dim); }
+.event-log p.action { color: var(--text); }
+.event-log p.system { color: var(--cyan); font-style: italic; }
+
+/* =================================================================
+   Action panel — bottom area where the player makes choices
+   ================================================================= */
+.action-panel {
+  border: 2px solid var(--border-bright);
+  background: var(--bg-panel-2);
+  padding: 16px 20px;
+  min-height: 140px;
+  box-shadow: var(--pixel-shadow);
+}
+.action-panel h2 {
+  font-size: 13px;
+  font-weight: bold;
+  color: var(--yellow);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 12px;
+}
+.action-panel p { margin-bottom: 10px; color: var(--text); }
+.preset-grid, .weekend-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 10px;
+  margin-bottom: 10px;
+}
+.preset-card, .weekend-card {
+  border: 2px solid var(--border);
+  background: var(--bg-panel);
+  padding: 12px;
+  cursor: pointer;
+  transition: all 0.12s ease;
+}
+.preset-card:hover, .weekend-card:hover {
+  border-color: var(--cyan);
+  background: var(--bg-panel-2);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 0 0 var(--blue);
+}
+.preset-card .label {
+  color: var(--cyan);
+  font-weight: bold;
+  margin-bottom: 4px;
+}
+.preset-card .desc {
+  color: var(--text-dim);
+  font-size: 11px;
+}
+.action-row {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+  flex-wrap: wrap;
+}
+
+/* =================================================================
+   Buttons
+   ================================================================= */
+.btn {
+  background: var(--bg-panel);
+  border: 2px solid var(--border-bright);
+  color: var(--text);
+  padding: 8px 18px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: bold;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: all 0.1s ease;
+  text-transform: uppercase;
+}
+.btn:hover {
+  background: var(--border-bright);
+  color: white;
+  transform: translateY(-1px);
+  box-shadow: 0 3px 0 0 var(--blue);
+}
+.btn:active { transform: translateY(1px); box-shadow: none; }
+.btn-primary {
+  background: var(--magenta);
+  color: white;
+  border-color: var(--magenta);
+  box-shadow: 0 0 12px rgba(240, 107, 255, 0.4);
+}
+.btn-primary:hover {
+  background: white;
+  color: var(--magenta);
+  border-color: var(--magenta);
+}
+
+/* =================================================================
+   Custom plan form
+   ================================================================= */
+.custom-plan-form {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px 16px;
+  margin-bottom: 10px;
+}
+.plan-row {
+  display: grid;
+  grid-template-columns: 140px 1fr;
+  align-items: center;
+  gap: 8px;
+}
+.plan-row label {
+  color: var(--text-dim);
+  font-size: 11px;
+}
+.plan-row input[type="number"] {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 6px 10px;
+  font-family: var(--font-mono);
+  width: 64px;
+  text-align: center;
+}
+.plan-row select {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 6px 8px;
+  font-family: var(--font-mono);
+}
+.plan-summary {
+  margin-top: 6px;
+  padding: 8px 12px;
+  background: var(--bg);
+  border: 1px dashed var(--border);
+  color: var(--cyan);
+  font-size: 11px;
+}
+.plan-summary.over { color: var(--red); border-color: var(--red-dim); }
+
+/* =================================================================
+   Overlays / Modals
+   ================================================================= */
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(10, 14, 39, 0.85);
+  backdrop-filter: blur(4px);
+  display: grid;
+  place-items: center;
+  z-index: 50;
+  padding: 20px;
+}
+.modal-card {
+  background: var(--bg-panel);
+  border: 2px solid var(--border-bright);
+  box-shadow: var(--pixel-shadow);
+  padding: 28px 32px;
+  max-width: 520px;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+.modal-card h2 {
+  color: var(--magenta);
+  margin-bottom: 12px;
+  letter-spacing: 1px;
+}
+.modal-card h3 {
+  font-size: 12px;
+  margin-top: 12px;
+  margin-bottom: 6px;
+  letter-spacing: 1px;
+}
+.modal-card h3.good { color: var(--green); }
+.modal-card h3.bad { color: var(--red); }
+.modal-card h3.warn { color: var(--yellow); }
+.modal-card p { color: var(--text); margin-bottom: 8px; }
+.modal-card ul {
+  margin-left: 18px;
+  margin-bottom: 8px;
+  color: var(--text-dim);
+}
+
+/* Title screen */
+.title-card {
+  text-align: center;
+  padding: 50px 70px;
+  border: 3px solid var(--magenta);
+  background: var(--bg-panel);
+  box-shadow: 0 0 30px rgba(240, 107, 255, 0.3);
+}
+.title-main {
+  font-size: 32px;
+  color: var(--magenta);
+  letter-spacing: 6px;
+  text-shadow: 0 0 20px rgba(240, 107, 255, 0.5);
+  margin-bottom: 16px;
+  font-weight: 900;
+  line-height: 1.1;
+}
+.title-sub {
+  color: var(--cyan);
+  font-style: italic;
+  margin-bottom: 30px;
+}
+.title-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 24px;
+}
+.title-credit {
+  color: var(--text-muted);
+  font-size: 11px;
+}
+
+/* Event card */
+.event-card {
+  text-align: center;
+  border-color: var(--yellow);
+}
+.event-icon {
+  font-size: 24px;
+  color: var(--yellow);
+  margin-bottom: 8px;
+}
+#event-name {
+  color: var(--yellow);
+  margin-bottom: 8px;
+}
+#event-description {
+  color: var(--text);
+  margin-bottom: 18px;
+  font-style: italic;
+}
+.event-choices {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* Ending card */
+.ending-card {
+  border-color: var(--magenta);
+  text-align: center;
+  max-width: 600px;
+}
+#ending-title {
+  color: var(--magenta);
+  margin-bottom: 16px;
+  letter-spacing: 2px;
+}
+#ending-text {
+  color: var(--text);
+  margin-bottom: 18px;
+  white-space: pre-line;
+  text-align: left;
+  line-height: 1.6;
+}
+.ending-stats {
+  background: var(--bg);
+  border: 1px dashed var(--border);
+  padding: 10px 14px;
+  margin-bottom: 18px;
+  text-align: left;
+  font-size: 11px;
+  color: var(--text-dim);
+}
+.ending-stats div { margin: 2px 0; }
+
+/* Toast */
+.toast {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--bg-panel);
+  border: 2px solid var(--cyan);
+  color: var(--cyan);
+  padding: 10px 20px;
+  z-index: 80;
+  box-shadow: 0 0 16px rgba(111, 240, 255, 0.4);
+  animation: toast-in 0.2s ease;
+}
+@keyframes toast-in {
+  from { transform: translate(-50%, 20px); opacity: 0; }
+  to   { transform: translate(-50%, 0); opacity: 1; }
+}
+
+/* =================================================================
+   Responsive
+   ================================================================= */
+@media (max-width: 720px) {
+  #app { padding: 10px; }
+  .dashboard { grid-template-columns: 1fr; }
+  .stat-row { grid-template-columns: 70px 1fr 60px; }
+  .title-card { padding: 30px 24px; }
+  .title-main { font-size: 22px; letter-spacing: 4px; }
+  .modal-card { padding: 20px 16px; }
+  .custom-plan-form { grid-template-columns: 1fr; }
+}
